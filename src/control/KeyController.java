@@ -25,6 +25,13 @@ public class KeyController implements KeyListener{
 		else if(KeyEvent.VK_RIGHT==key){
 			main.getPlayer().shoot(2);
 		}
+		else if(KeyEvent.VK_ESCAPE==key){
+			System.exit(0);
+		}
+//		For testing
+//		else if(KeyEvent.VK_T==key){
+//			SoundManager.stopPulse();
+//		}
 	}
 	public void keyTyped(KeyEvent e) {}
 	public void keyReleased(KeyEvent e){}

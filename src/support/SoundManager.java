@@ -7,34 +7,59 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 
 public class SoundManager {
-	public static Clip clip;
-	public static AudioInputStream audioInputStream;
-	public static void pulseLoop(int volume){
+	public static Clip pulseClip,clip;
+	public static AudioInputStream audioInputStreamPulse,audioInputStream;
+	public static void pulseLoop(int volume,int direction){
 		try{
-			URL url = new URL("file:///Users/carterf/Desktop/LaneDash_Resources/PulseLoop.wav");
-			audioInputStream = AudioSystem.getAudioInputStream(url);
-			clip = AudioSystem.getClip();
-			clip.open(audioInputStream);
+			URL url = null;
+			if(direction==0){
+				url = SoundManager.class.getResource(Settings.soundURL("loopLeft"));
+			}else if(direction==1){
+				url = SoundManager.class.getResource(Settings.soundURL("loopUp"));
+			}else if(direction==2){
+				url = SoundManager.class.getResource(Settings.soundURL("loopRight"));
+			}
+			audioInputStreamPulse = AudioSystem.getAudioInputStream(url);
+			pulseClip = AudioSystem.getClip();
+			pulseClip.open(audioInputStreamPulse);
 			FloatControl gainControl = 
-				    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-				gainControl.setValue(-4.0f*(volume));
-			clip.start();
+					(FloatControl) pulseClip.getControl(FloatControl.Type.MASTER_GAIN);
+			float vol = -60.0f + 5.0f*volume;
+			gainControl.setValue(vol);
+			pulseClip.start();
 		} catch (Exception e){System.out.println(e.toString());}
 	}
 	public static void shootSound(){
-		System.out.println("SHOOT");
+		sound(Settings.soundURL("shoot"));
 	}
 	public static void gameOverSound(){
-		System.out.println("GAME OVER");
+		sound(Settings.soundURL("playerDeath"));
 	}
 	public static void enemyShot(){
-		System.out.println("ENEMY SHOT");
+		sound(Settings.soundURL("enemyDeath"));
 	}
-	public static void missedShot(){
-		System.out.println("MISSED SHOT");
+
+	private static void sound(String URL){
+		stopSound();
+		try{
+			URL url = SoundManager.class.getResource(URL);
+			System.out.println(url);
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
+			clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+			clip.start();
+		} catch (Exception e){System.out.println(e.toString());}
 	}
-//	Delete later
-	public static void position(int n){
-		System.out.println(n);
+	
+	public static void stopPulse(){
+		if(pulseClip!=null){
+			pulseClip.stop();
+		}
 	}
+	public static void stopSound(){
+		if(clip!=null){
+			clip.stop();
+		}
+	}
+
 }

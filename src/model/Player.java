@@ -16,8 +16,6 @@ public class Player {
 		SoundManager.shootSound();
 		if(main.checkLane(lane)){
 			main.getEnemy().shot();
-		}else{
-			SoundManager.missedShot();
 		}
 	}
 }
