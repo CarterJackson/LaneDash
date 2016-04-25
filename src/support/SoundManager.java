@@ -7,7 +7,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 
 public class SoundManager {
-	public static Clip pulseClip,clip;
+	public static Clip pulseClip,shootClip,clip;
 	public static AudioInputStream audioInputStreamPulse,audioInputStream;
 	public static void pulseLoop(int volume,int direction){
 		try{
@@ -30,23 +30,29 @@ public class SoundManager {
 		} catch (Exception e){System.out.println(e.toString());}
 	}
 	public static void shootSound(){
-		sound(Settings.soundURL("shoot"));
+		sound(Settings.soundURL("shoot"),shootClip);
 	}
 	public static void gameOverSound(){
-		sound(Settings.soundURL("playerDeath"));
+		sound(Settings.soundURL("playerDeath"),clip);
 	}
 	public static void enemyShot(){
-		sound(Settings.soundURL("enemyDeath"));
+		sound(Settings.soundURL("enemyDeath"),clip);
 	}
 
-	private static void sound(String URL){
-		stopSound();
+	private static void sound(String URL,Clip clip){
+		stopSound(clip);
 		try{
 			URL url = SoundManager.class.getResource(URL);
 			System.out.println(url);
 			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
 			clip = AudioSystem.getClip();
 			clip.open(audioInputStream);
+			
+			FloatControl gainControl = 
+					(FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+			float vol = -30.0f;
+			gainControl.setValue(vol);
+			
 			clip.start();
 		} catch (Exception e){System.out.println(e.toString());}
 	}
@@ -56,7 +62,7 @@ public class SoundManager {
 			pulseClip.stop();
 		}
 	}
-	public static void stopSound(){
+	public static void stopSound(Clip clip){
 		if(clip!=null){
 			clip.stop();
 		}

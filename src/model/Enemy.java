@@ -39,7 +39,7 @@ public class Enemy implements Runnable{
 	
 	public void shot(){
 		alive = false;
-		ThreadControl.sleep(500);
+		ThreadControl.sleep(dist*50);
 		main.enemyShot();
 	}
 	
