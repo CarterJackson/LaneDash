@@ -26,7 +26,7 @@ extends Frame
 	LayoutManager layout;
 	Font bodyFont = new Font(null,0,60);
 	Font titleFont = new Font(null,0,80);
-	JLabel roundLabel,distanceLabel,directionLabel;
+	JLabel roundLabel,distanceLabel,directionLabel,statusLabel;
 	
 //	public void init(){
 	public Game(){
@@ -50,6 +50,16 @@ extends Frame
 		title.setText("LaneDash");
 		pan.add(title);
 		
+		statusLabel = new JLabel();
+		statusLabel.setFont(bodyFont);
+		statusLabel.setAlignmentX(CENTER_ALIGNMENT);
+		pan.add(statusLabel);
+		
+		roundLabel = new JLabel();
+		roundLabel.setFont(bodyFont);
+		roundLabel.setAlignmentX(CENTER_ALIGNMENT);
+		pan.add(roundLabel);
+		
 		directionLabel = new JLabel();
 		directionLabel.setFont(bodyFont);
 		directionLabel.setAlignmentX(CENTER_ALIGNMENT);
@@ -60,18 +70,18 @@ extends Frame
 		distanceLabel.setAlignmentX(CENTER_ALIGNMENT);
 		pan.add(distanceLabel);
 		
-		roundLabel = new JLabel();
-		roundLabel.setFont(bodyFont);
-		roundLabel.setAlignmentX(CENTER_ALIGNMENT);
-		pan.add(roundLabel);
-		
-		newGame();
+		round=0;
+		roundLabel.setText("Round: "+String.valueOf(round));
+		statusLabel.setText("PRESS SPACE TO START");
 	}
 	public void newGame(){
+		statusLabel.setText(null);
 		round=1;
 		makeEnemy();
 	}
 	public void gameOver(){
+		enemy.setAlive(false);
+		statusLabel.setText("- GAME OVER -");
 		SoundManager.stopPulse();
 		SoundManager.gameOverSound();
 	}
@@ -91,6 +101,9 @@ extends Frame
 	
 //	Returns true if lane is occupied
 	public boolean checkLane(int lane){
+		if(round==0){
+			return false;
+		}
 		if(enemy.getLane()==lane){
 			return true;
 		}else{

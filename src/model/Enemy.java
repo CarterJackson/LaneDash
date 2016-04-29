@@ -38,9 +38,11 @@ public class Enemy implements Runnable{
 	}
 	
 	public void shot(){
-		alive = false;
-		ThreadControl.sleep(dist*50);
-		main.enemyShot();
+		if(alive){
+			alive = false;
+			ThreadControl.sleep(dist*50);
+			main.enemyShot();
+		}
 	}
 	
 	private void move(){
@@ -55,7 +57,12 @@ public class Enemy implements Runnable{
 		int vol = ((Settings.getStartDistance()-offset)-(dist-offset));
 		SoundManager.pulseLoop(vol,lane);
 	}
-	
+	public void setAlive(boolean b){
+		alive = b;
+	}
+	public boolean getAlive(){
+		return alive;
+	}
 	public int getDist(){
 		return dist;
 	}
