@@ -1,5 +1,5 @@
 # LaneDash
-Auditory game for the visually deficient (in development) 
+Auditory game for the visually deficient
 Author: Carter Jackson
 
 The audio in this program was acquired from www.freesound.org and is under the Creative Commons license.
